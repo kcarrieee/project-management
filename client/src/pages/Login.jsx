@@ -1,4 +1,9 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { login, reset } from '../features/auth/AuthSlice'
+import { useNavigate } from 'react-router-dom'
+import Spinner from '../components/Spinner'
+
 
 const Login = () => {
  const [formData, setFormData]= useState({
@@ -7,6 +12,24 @@ const Login = () => {
   })
 
   const { email, password } = formData
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { user, isSuccess, isLoading, message, isError } = useSelector(state => state.auth)
+
+
+  useEffect(()=>{
+    if(isError){
+      alert(message)
+    }
+    //redirect when logged in
+    if(isSuccess || user){
+      navigate('/')
+
+    }
+    dispatch(reset())
+  },[user, isSuccess, isError, message , navigate, dispatch])
+
+  
 
   const onChange = (e) => {
     setFormData((prevState)=>({
@@ -17,6 +40,17 @@ const Login = () => {
     const onSubmit = (e) => {
       e.preventDefault()
 
+      const userData = {
+          email,
+          password
+      }
+
+      dispatch(login(userData))
+
+    }
+
+    if(isLoading){
+      return <Spinner/>
     }
 
   return (
@@ -28,7 +62,7 @@ const Login = () => {
      
        <div className=" mb-6">
         <div className="md:w-1/3">
-          <label className="block text-gray-500   mb-1 md:mb-0 pr-4" for="inline-full-email">
+          <label className="block text-gray-500   mb-1 md:mb-0 pr-4" htmlFor="email">
             Email
           </label>
         </div>
@@ -39,7 +73,7 @@ const Login = () => {
       </div>
       <div className=" mb-6">
         <div className="md:w-1/3">
-          <label className="block text-gray-500 mb-1 md:mb-0 pr-4" for="inline-password">
+          <label className="block text-gray-500 mb-1 md:mb-0 pr-4" htmlFor="password">
             Password
           </label>
         </div>

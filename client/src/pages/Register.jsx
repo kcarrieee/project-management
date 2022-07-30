@@ -1,4 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { register, reset} from '../features/auth/AuthSlice'
+import {useNavigate} from 'react-router-dom'
+import Spinner from '../components/Spinner'
 
 const Register = () => {
 
@@ -9,9 +13,26 @@ const Register = () => {
     password2:''
   })
   const [isValid, setIsValid]= useState(false)
-
+  const navigate = useNavigate()
   const { name, email, password, password2 } = formData
 
+  const dispatch = useDispatch()
+  const { user, isSuccess, isError, isLoading, message } = useSelector(state => state.auth)
+
+
+  useEffect(()=>{
+    if(isError){
+      alert(message)
+    }
+    //redirect when logged in
+    if(isSuccess || user){
+      navigate('/')
+
+    }
+    dispatch(reset())
+
+  },[user, isSuccess, isError, message , navigate, dispatch])
+  
   const onChange = (e) => {
     setFormData((prevState)=>({
       ...prevState,
@@ -23,7 +44,18 @@ const Register = () => {
 
       if(password !== password2){
         setIsValid(!isValid)
+      }else{
+        const userData = {
+          name,
+          email,
+          password
+        }
+
+        dispatch(register(userData))
       }
+    }
+    if(isLoading) {
+      return <Spinner/>
     }
 
   return (
@@ -34,7 +66,7 @@ const Register = () => {
      <form className="w-full max-w-sm mt-10" onSubmit={onSubmit}>
       <div className=" mb-6">
         <div className="w-1/3">
-          <label className="block text-gray-500 mb-1 " for="inline-full-name">
+          <label className="block text-gray-500 mb-1 " htmlFor="name">
             Full Name
           </label>
         </div>
@@ -45,7 +77,7 @@ const Register = () => {
       </div>
        <div className=" mb-6">
         <div className="md:w-1/3">
-          <label className="block text-gray-500   mb-1 md:mb-0 pr-4" for="inline-full-email">
+          <label className="block text-gray-500   mb-1 md:mb-0 pr-4" htmlFor="email">
             Email
           </label>
         </div>
@@ -56,7 +88,7 @@ const Register = () => {
       </div>
       <div className=" mb-6">
         <div className="md:w-1/3">
-          <label className="block text-gray-500 mb-1 md:mb-0 pr-4" for="inline-password">
+          <label className="block text-gray-500 mb-1 md:mb-0 pr-4" htmlFor="password">
             Password
           </label>
         </div>
@@ -66,7 +98,7 @@ const Register = () => {
       </div>
        <div className=" mb-6">
         <div className="md:w-1/3">
-          <label className="block text-gray-500 mb-1 md:mb-0 pr-4" for="inline-password">
+          <label className="block text-gray-500 mb-1 md:mb-0 pr-4" htmlFor="password2">
             Password 
           </label>
         </div>
