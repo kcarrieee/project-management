@@ -44,7 +44,7 @@ const registerUser = asyncHandler(async (req, res) => {
     })
   } else {
     res.status(400)
-    throw new error('Invalid user data')
+    throw new Error('Invalid user data')
   }
 })
    
@@ -57,17 +57,21 @@ const loginUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({email})
 
     if(user && (await bcrypt.compare(password, user.password))){
-          if (user) {
+      
+        //     _id: user._id,
+        //     name: user.name,
+        //     email: user.email,
+        //     token: genToken(user._id)
             res.status(200).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token: genToken(user._id)
+              _id: user._id,
+              name: user.name,
+              email: user.email,
+              token: genToken(user._id)
             })
-        } else {
+          } else {
             res.status(401)
-            throw new Error('Invalid email')
-        }
+            throw new Error('Invalid credentials')
+          
     }
 })
 const genToken=(id)=>{
