@@ -26,11 +26,11 @@ const getProjects = asyncHandler(async (req, res) => {
 
 const createProjects = asyncHandler(async (req, res) => {
 
-    const {theme, description } = req.body
+    const { theme, description } = req.body
 
     if(!theme || !description){
         res.status(400)
-        throw new Error('Add a theme, description, status')
+        throw new Error('Add a theme, description')
     }
 
      //get user using ID and JWT

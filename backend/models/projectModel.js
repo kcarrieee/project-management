@@ -16,11 +16,11 @@ const projectSchema = mongoose.Schema({
         required: [true, 'Enter a description of the project'],
         unique: true,
     },
-    status: {
-        type: String,
-        required: true,
-        enum: ['new', 'in progress', 'done'],
-        default: 'new'
+     status: {
+      type: String,
+      required: true,
+      enum: ['new', 'open', 'closed'],
+      default: 'new',
     },
 }, { timestamps: true})
 
