@@ -3,7 +3,15 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
-
+.cut-text {
+  display: inline-block;
+  width: 180px;
+  height: 2em;
+  white-space: nowrap;
+  
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

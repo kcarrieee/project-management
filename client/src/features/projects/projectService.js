@@ -27,8 +27,34 @@ const getProject = async (token) => {
   return response.data
 }
 
+const getSingleProject = async (projectId, token) => {
+    const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const response = await axios.get(API_URL + projectId, config)
+
+  return response.data
+}
+
+const closeProject = async (projectId, token) => {
+    const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const response = await axios.put(API_URL + projectId,{status: 'done'}, config)
+
+  return response.data
+}
+
 const projectService = {
    createProject,
-   getProject
+   getProject,
+   getSingleProject,
+   closeProject
 }
 export default projectService

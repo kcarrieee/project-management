@@ -19,7 +19,6 @@ const Header = () => {
             <ul className='flex items-center'>
                 {user ? 
                 (<>
-                  <li className='ml-4 cursor-pointer text-gray-600'><Link to={'/'}>Profile</Link></li>
                   <li className='ml-4 cursor-pointer text-gray-600'><Link to={'/myprojects'}>My projects</Link></li>
                   <li className='ml-4 cursor-pointer bg-black rounded-full py-2 px-4 text-white'><button onClick={onLogout}>Logout</button></li>
                 </>) : 

@@ -34,6 +34,31 @@ export const getProject = createAsyncThunk('projects/getAll',
         }
 })
 
+export const getSingleProject = createAsyncThunk('projects/get',
+    async(projectId, thunkAPI)=>{
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            return await projectService.getSingleProject(projectId, token)
+        } catch (error) {
+            const message = ( error.response && error.response.data && error.response.data.message )
+            || error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+})
+
+export const updateProject = createAsyncThunk('projects/close',
+    async(projectId, thunkAPI)=>{
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            return await projectService.closeProject(projectId, token)
+        } catch (error) {
+            const message = ( error.response && error.response.data && error.response.data.message )
+            || error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+})
+
+
 export const projectSlice = createSlice({
     name:'projects',
     initialState,   
@@ -67,6 +92,25 @@ export const projectSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
+            .addCase(getSingleProject.pending, (state)=>{
+                state.isLoading = true
+            })
+            .addCase(getSingleProject.fulfilled, (state, action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.project = action.payload
+            })
+            .addCase(getSingleProject.rejected, (state, action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(updateProject.fulfilled, (state, action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.projects.map((project) => project._id === action.payload._id ? project.status = 'done' : project) 
+            })
+            
     }
 })
 

@@ -5,6 +5,7 @@ import { getProject, reset } from '../features/projects/projectSlice'
 import Spinner from '../components/Spinner'
 import ProjectItem from '../components/ProjectItem'
 import BackBtn from '../components/BackBtn'
+import CreateBtn from '../components/CreateBtn'
 
 
 const Projects = () => {
@@ -31,6 +32,7 @@ const Projects = () => {
     }
   
   return (
+    <>
     <section className='mt-6'>
        <div className='flex justify-between items-end'> <h1 className='text-4xl'>Projects</h1> 
        <div >
@@ -65,7 +67,10 @@ const Projects = () => {
                 <ProjectItem project={project} key={project._id}/>
             ))}
         </div>
+        
     </section>
+    <CreateBtn/>
+    </>
   )
 }
 
