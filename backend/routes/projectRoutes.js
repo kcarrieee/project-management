@@ -7,6 +7,8 @@ const { getProjects,
         updateProject
     } = require('../controllers/projectController')
 const { protect } = require('../middleware/authMiddle')
+const noteRouter = require('./NoteRoutes')
+router.use('/:projectId/notes', noteRouter)
 
 router.route('/').get(protect, getProjects).post(protect, createProjects)
 router.route('/:id')
